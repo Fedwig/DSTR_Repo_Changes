@@ -125,6 +125,9 @@ public:
         return false;
     }
 
+
+    //------------------------------------------------------------------------------------------------------------------------------------------
+
     customer* createNewCustomerNode(string customerID, string customerName, string customerPhoneNum, double customerDeposit)
     {
         //1. create structure in the heap location
@@ -239,7 +242,7 @@ public:
     //customer* binarysearchcustomerlist(string custid)
     //{
     //    struct customer* head = custhead;
-    //    struct customer* tail = null;
+    //    struct customer* tail = null; 
 
     //    do
     //    {
@@ -270,13 +273,13 @@ public:
     //}
 
 
-        // function to search for an id in linked list using linear search
+    // function to search for customer id in linked list using linear search
     customer* searchCustomerID(string keyword) {
         customer* current = custHead;
 
         // traverse linked list
         while (current != NULL) {
-            // check if current node's id matches search id
+            // check if current node's customer id matches search id
             if (current->customerID == keyword) {
                 return current;
             }
@@ -308,6 +311,10 @@ public:
         cout << endl;
     }
 
+    void login()
+    {
+        //login function
+    }
 
     void searchVehicle()
     {
@@ -427,6 +434,8 @@ public:
                 break;
             case 5:
                 // Manage client information
+                manageCustomer();
+
                 break;
             default:
                 // End the program
@@ -436,49 +445,78 @@ public:
         }
     }
 
+
+
     void bookVehicle() {
         //Booking vehilcle
     }
 
-    //customer* manageCustomer() {
-
-    //    custHead = NULL;
-
-    //    customer* current = custHead;
-
-    //    string custID;
-
-
-    //    //Searching for the head with the input customer ID
-    //    cout << "Enter customer ID: " << endl;
-    //    getline(cin, custID);
-    //    current = searchCustomerID(custID);
-    //    
-
-    //    //Updating details of the customer
-    //    cout << "Enter Customer Name: " << endl;
-    //    getline(cin, current->customerID);
-
-    //    cout << "Enter Customer Phone Number: " << endl;
-    //    cin >> current->customerPhoneNum;
-
-    //    cout << "Enter Customer : " << endl;
-    //    cin >> current->customerDeposit;
-    //
-    //    return custHead;
-    //}
 
     void manageCustomer() {
+
+        int userInput;
+        
+        cout << "--------MANAGE CUSTOMER SECTION--------" << endl;
+        cout << "\n1. Update Customer Details" << endl;
+        cout << "2. Add New Customer" << endl;
+
+        cout << "\nEnter Choice: ";
+        cin >> userInput;
+        cin.ignore();
+
+        switch(userInput) {
+
+        case 1: 
+            updateCustomerChoice();
+            break;
+        
+        case 2:
+            addNewCustomer();
+            break;
+
+        default:
+            "Invalid option selected.";
+            break;
+        }
+    }
+
+
+    void addNewCustomer() {
+
+        string custID, custName, custPhoneNum;
+
+        cout << "\n ENTER CUSTOMER ID           : ";
+        getline(cin, custID);
+        cout << endl;
+
+        cout << " ENTER CUSTOMER NAME         :  ";
+        getline(cin, custName);
+        cout << endl;
+
+        cout << "\n ENTER CUSTOMER PHONE NUMBER :  ";
+        getline(cin, custPhoneNum);
+        cout << endl << endl;
+
+        createNewCustomerNode(custID, custName, custPhoneNum, NULL);
+        cout << "Newly Added Customer Details\n" << endl;
+            
+        cout << "Customer ID            : " << custID << endl;
+        cout << "Customer Name          : " << custName << endl;
+        cout << "Customer Phone Number  : " << custPhoneNum << endl;
+        cout << "Customer Deposit       : RM" << NULL << endl;
+        cout << endl;
+        cout << "Customer Details Successfully Added!" << endl;
+    }
+
+    void updateCustomerChoice() {
         string custID;
 
-        cout << "1. Edit Customer Details" << endl;
-        cout << "\n Enter Customer ID: ";
+        cout << "\n ENTER CUSTOMER ID: ";
         cin >> custID;
         cin.ignore();
 
         searchandUpdateCustomer(custID);
     }
-
 
     void searchandUpdateCustomer(string custID)
     {
@@ -487,29 +525,23 @@ public:
         {
             if (custID == current->customerID)
             {
-                cout << "Car Status: " << current->customerID << endl;
-                int answer;
-                cout << "Do you want to edit status of the car ? (1 - Yes, 0 - No) ";
-                cin >> answer;
-                cin.ignore();
-                if (answer == 1)
-                {
-                    //Updating details of the customer
-                    cout << "\nEnter Customer Name: ";
-                    getline(cin, current->customerName);
-                    cout << endl;
+                cout << "Customer ID: " << current->customerID << endl;
+
+                //Updating details of the customer
+                cout << "\nEnter Customer Name: ";
+                getline(cin, current->customerName);
+                cout << endl;
 
 
-                    cout << "\nEnter Customer Phone Number: ";
-                    cin >> current->customerPhoneNum;
-                    cout << endl;
+                cout << "\nEnter Customer Phone Number: ";
+                cin >> current->customerPhoneNum;
+                cout << endl;
 
 
-                    cout << "\nEnter Customer Deposit Amount: ";
-                    cin >> current->customerDeposit;
+                cout << "\nEnter Customer Deposit Amount: RM ";
+                cin >> current->customerDeposit;
 
-                }
-                displayUpdateCustomer();
+                displayUpdateCustomer(current->customerID);
                 return;
                 system("cls");
             }
@@ -520,21 +552,21 @@ public:
         //fill out atlernative if customer ID does not exist
     }
 
-    void displayUpdateCustomer() {
-        string customerIDInput;
-        cout << "Please input ID to view changes : ";
-        cin >> customerIDInput;
-        customer* customer = searchCustomerID(customerIDInput);
+    void displayUpdateCustomer(string custID) {
+
+        system("cls");
+        customer* customer = searchCustomerID(custID);
 
         // Print search results
 
         if (customer != NULL) {
+            cout << "Updated Customer Details\n" << endl;
             cout << "Customer ID            : " << customer->customerID << endl;
             cout << "Customer Name          : " << customer->customerName << endl;
             cout << "Customer Phone Number  : " << customer->customerPhoneNum << endl;
-            cout << "Customer Deposit       : " << customer->customerDeposit<< endl;
+            cout << "Customer Deposit       : RM " << customer->customerDeposit<< endl;
             cout << endl;
-            cout << "Customer Details Successfully Changed" << endl;
+            cout << "Customer Details Successfully Updated" << endl;
         }
 
         if (customer != NULL)
@@ -551,51 +583,12 @@ public:
             csvFile.close();
         }
 
-        if (customer != NULL)
-        {
-            updateCustomerDetails(customerIDInput);
-        }
-
         else
         {
             cout << "Customer ID not found." << endl;
         }
 
         return;
-    }
-
-    void updateCustomerDetails(string custID)
-    {
-        customer* current = custHead;
-        while (current != NULL)
-        {
-            if (custID == current->customerID)
-            {
-                cout << "Customer ID            : " << current->customerID << endl;
-                cout << "Customer Name          : " << current->customerName << endl;
-                cout << "customer Phone Number  : " << current->customerPhoneNum << endl;
-                cout << "customer Depsoit       : " << current->customerDeposit<< endl;
-
-                int answer;
-                cout << "do you want to edit status of the car ?  1 - yes, 0 - no: ";
-                cin >> answer;
-                if (answer == 1)
-                {
-                    cout << endl;
-                    cout << "enter customer name: " << endl;
-                    getline(cin, current->customerID);
-
-                    cout << "enter customer phone number: " << endl;
-                    cin >> current->customerPhoneNum;
-
-
-                }
-                return;
-            }
-            current = current->custNext;
-
-        }
-        cout << "Customer ID does not exist. Please try again. " << endl;
     }
 
 };
@@ -605,7 +598,9 @@ public:
 
 class Manager : public Staff{
 
+
 public:
+
     void managerLogin()
     {
         //login function for staff
@@ -701,6 +696,7 @@ public:
             }
         }
     }
+
 
     void produceSaleInvoiceReport()
     {
@@ -1312,12 +1308,19 @@ public:
     }
 };
 
-int main()
-{
+
+int main(){
+
    // int listCount = 0;
    // CarList carlist;
     Salesperson salesperson;
     Manager manager;
+
+    //Storing Content from CSV Files into Linked List
+    salesperson.storeinCustomerLinkedList("customer.csv");
+
+
+
    // string titleInput;
    // int CarID;
     int loginOption = 0;
@@ -1348,53 +1351,63 @@ int main()
             exit(0);
         }
     }
+}
+
+// int main()
+// {
+//    // int listCount = 0;
+//    // CarList carlist;
+//    // string titleInput;
+//    // int CarID;
 
 
-   // carlist.storeInCarLinkedList("carlist.csv");
-   // //listCount = carlist.getCount();
-   //// carlist.bubbleSortCarRegDate();
-   // //carlist.MergeSort(carlist.head);
-   // //carlist.DisplayCarList();
-   // int answer; 
-   // string word;
-   // cout << "Do you want to book a car? 1 - Yes, 0 - No: " << endl;
-   // cin >> answer;
-   // cin.ignore();
+//    // carlist.storeInCarLinkedList("carlist.csv");
+//    // //listCount = carlist.getCount();
+//    //// carlist.bubbleSortCarRegDate();
+//    // //carlist.MergeSort(carlist.head);
+//    // //carlist.DisplayCarList();
+//    // int answer; 
+//    // string word;
+//    // cout << "Do you want to book a car? 1 - Yes, 0 - No: " << endl;
+//    // cin >> answer;
+//    // cin.ignore();
 
-   // while (answer == 1)
-   // {
-   //     carlist.displayListItemsBinary();
-   //     cout << "Do you want to edit anything? 1 - Yes, 0 - No: " << endl;
-   //     cin >> answer;
+//    // while (answer == 1)
+//    // {
+//    //     carlist.displayListItemsBinary();
+//    //     cout << "Do you want to edit anything? 1 - Yes, 0 - No: " << endl;
+//    //     cin >> answer;
 
-   //     int CarID;
-   //     if (answer == 1)
-   //     {
-   //         cout << endl;
-   //         cout << "Enter your car ID: ";
-   //         cin >> CarID;
-   //         carlist.SearchAndUpdateBasedCarID(CarID);
-   //     }
-   //     cout << "Do you want to proceed with booking? 1 - Yes, 0 - No: ";
-   //     cin >> answer;
-   //     cin.ignore();
-   //     system("pause");
-   //     system("cls");
-   // }
-   // return 0;
+//    //     int CarID;
+//    //     if (answer == 1)
+//    //     {
+//    //         cout << endl;
+//    //         cout << "Enter your car ID: ";
+//    //         cin >> CarID;
+//    //         carlist.SearchAndUpdateBasedCarID(CarID);
+//    //     }
+//    //     cout << "Do you want to proceed with booking? 1 - Yes, 0 - No: ";
+//    //     cin >> answer;
+//    //     cin.ignore();
+//    //     system("pause");
+//    //     system("cls");
+//    // }
+//    // return 0;
 
-    //salesperson.storeinCustomerLinkedList("customer.csv");
-    //salesperson.manageCustomer();
+
+//     Salesperson salesperson;
+//     salesperson.storeinCustomerLinkedList("customer.csv");
+//     salesperson.manageCustomer();
     
 
 
 
-    //carlist.SearchAndUpdateBasedCarID(CarID);
-    //carlist.displayListItemsBinary();
+//     //carlist.SearchAndUpdateBasedCarID(CarID);
+//     //carlist.displayListItemsBinary();
 
-    /*cout << "Enter Sale Title Search: ";
-    cin >> titleInput;
-    carlist.searchItemBasedOnKeyword(titleInput);
-    cin.ignore();*/
-}
+//     /*cout << "Enter Sale Title Search: ";
+//     cin >> titleInput;
+//     carlist.searchItemBasedOnKeyword(titleInput);
+//     cin.ignore();*/
+// }
 
