@@ -39,6 +39,7 @@ struct staff
     string staffName;
     string staffPassword;
     string staffPosition;
+    staff* staffNext;
 };
 
 
@@ -81,7 +82,48 @@ public:
     customer* custHead = NULL;
     customer* custTail = NULL;
 
+    staff* createStaff(int staffID, string staffName, string staffPassword, string staffPosition) {
+        staff* newStaffNode = new staff;
+        newStaffNode->staffID = staffID;
+        newStaffNode->staffName = staffName;
+        newStaffNode->staffPassword = staffPassword;
+        newStaffNode->staffPosition = staffPosition;
+        newStaffNode->staffNext = NULL;
+        return newStaffNode;
+    }
 
+    void addStaff(staff** head, int staffID, string staffName, string staffPassword, string staffPosition) {
+        staff* newStaffNode = createStaff(staffID, staffName, staffPassword, staffPosition);
+        if (*head == NULL) {
+            *head = newStaffNode;
+        }
+        else {
+            staff* current = *head;
+            while (current->staffNext != NULL) {
+                current = current->staffNext;
+            }
+            current->staffNext = newStaffNode;
+        }
+    }
+
+    void displayUsers(staff* head) {
+        staff* current = head;
+        while (current != NULL) {
+            cout << current->staffID << " " << current->staffName << " " << current->staffPassword << " " << current->staffPosition << endl;
+            current = current->staffNext;
+        }
+    }
+
+    bool checkUser(staff* head, string staffName, string staffPassword) {
+        staff* current = head;
+        while (current != NULL) {
+            if (current->staffName == staffName && current->staffPassword == staffPassword) {
+                return true;
+            }
+            current = current->staffNext;
+        }
+        return false;
+    }
 
     customer* createNewCustomerNode(string customerID, string customerName, string customerPhoneNum, double customerDeposit)
     {
@@ -197,7 +239,7 @@ public:
     //customer* binarysearchcustomerlist(string custid)
     //{
     //    struct customer* head = custhead;
-    //    struct customer* tail = null; 
+    //    struct customer* tail = null;
 
     //    do
     //    {
@@ -228,13 +270,13 @@ public:
     //}
 
 
-    // function to search for customer id in linked list using linear search
+        // function to search for an id in linked list using linear search
     customer* searchCustomerID(string keyword) {
         customer* current = custHead;
 
         // traverse linked list
         while (current != NULL) {
-            // check if current node's customer id matches search id
+            // check if current node's id matches search id
             if (current->customerID == keyword) {
                 return current;
             }
@@ -266,10 +308,6 @@ public:
         cout << endl;
     }
 
-    void login()
-    {
-        //login function
-    }
 
     void searchVehicle()
     {
@@ -295,6 +333,108 @@ public:
 class Salesperson : public Staff {
 
 public:
+
+    void staffLogin()
+    {
+        //login function for staff
+        // Create an empty linked list
+        staff* head = NULL;
+        string fileSelect;
+
+        // Read data from CSV file and add users to the linked list
+        ifstream file("Staff.csv");
+        if (file.is_open()) {
+            string line, header;
+            getline(file, header);
+            while (getline(file, line)) {
+                stringstream ss(line);
+                string staffIDStr, staffName, staffPassword, staffPosition;
+                getline(ss, staffIDStr, ',');
+                getline(ss, staffName, ',');
+                getline(ss, staffPassword, ',');
+                getline(ss, staffPosition, ',');
+
+                //convert string to integer
+                int staffID = stoi(staffIDStr);
+                addStaff(&head, staffID, staffName, staffPassword, staffPosition);
+            }
+            file.close();
+        }
+        else {
+            cout << "Unable to open file" << endl;
+            return;
+        }
+
+        // Display the linked list
+        displayUsers(head);
+
+        // Get input from user and check if it matches a user in the linked list
+        string staffName, staffPassword;
+        cout << "ENTER USERNAME:";
+        getline(cin, staffName);
+        cout << endl;
+        cout << "ENTER PASSWORD:";
+        getline(cin, staffPassword);
+        if (checkUser(head, staffName, staffPassword)) {
+            cout << endl << "LOGIN SUCCESSFUL!" << endl;
+        }
+        else {
+            cout << "LOGIN FAILED" << endl;
+            exit(0);
+        }
+
+        // Free memory used by the linked list
+        staff* current = head;
+        while (current != NULL) {
+            staff* next = current->staffNext;
+            delete current;
+            current = next;
+        }
+        head = NULL;
+
+        return;
+    }
+
+    void salespersonMainMenu()
+    {
+        int option = 0;
+        while ((option < 1) || (option > 6)) {
+            cout << endl << "----------SALESPERSON MENU----------";
+            cout << endl << "----1.SEARCH VEHICLE INFORMATION----";
+            cout << endl << "-------2.CREATE SALE INVOICE-------";
+            cout << endl << "-------3.CREATE BILL INVOICE-------";
+            cout << endl << "-----------4.BOOK VEHICLE-----------";
+            cout << endl << "----5.MANAGE CLIENT INFORMATION----";
+            cout << endl << "---------------6.EXIT---------------" << endl;
+            cout << endl << "ENTER YOUR CHOICE HERE:";
+            cin >> option;
+            cout << endl;
+            cin.ignore();
+
+            switch (option) {
+            case 1:
+                // Search vehicle information
+                break;
+            case 2:
+                // Create sale invoice 
+                break;
+            case 3:
+                //Create Bill invoice
+                break;
+            case 4:
+                // Book the vehicle
+
+                break;
+            case 5:
+                // Manage client information
+                break;
+            default:
+                // End the program
+                cout << endl << "Thank you for using our system !!" << endl;
+                exit(0);
+            }
+        }
+    }
 
     void bookVehicle() {
         //Booking vehilcle
@@ -329,70 +469,16 @@ public:
     //}
 
     void manageCustomer() {
-
-        int userInput;
-        
-        cout << "--------MANAGE CUSTOMER SECTION--------" << endl;
-        cout << "\n1. Update Customer Details" << endl;
-        cout << "2. Add New Customer" << endl;
-
-        cout << "\nEnter Choice: ";
-        cin >> userInput;
-        cin.ignore();
-
-        switch(userInput) {
-
-        case 1: 
-            updateCustomerChoice();
-            break;
-        
-        case 2:
-            addNewCustomer();
-            break;
-
-        default:
-            "Invalid option selected.";
-            break;
-        }
-    }
-
-
-    void addNewCustomer() {
-
-        string custID, custName, custPhoneNum;
-
-        cout << "\n ENTER CUSTOMER ID           : ";
-        getline(cin, custID);
-        cout << endl;
-
-        cout << " ENTER CUSTOMER NAME         :  ";
-        getline(cin, custName);
-        cout << endl;
-
-        cout << "\n ENTER CUSTOMER PHONE NUMBER :  ";
-        getline(cin, custPhoneNum);
-        cout << endl << endl;
-
-        createNewCustomerNode(custID, custName, custPhoneNum, NULL);
-        cout << "Newly Added Customer Details\n" << endl;
-            
-        cout << "Customer ID            : " << custID << endl;
-        cout << "Customer Name          : " << custName << endl;
-        cout << "Customer Phone Number  : " << custPhoneNum << endl;
-        cout << "Customer Deposit       : " << NULL << endl;
-        cout << endl;
-        cout << "Customer Details Successfully Added!" << endl;
-    }
-
-    void updateCustomerChoice() {
         string custID;
 
-        cout << "\n ENTER CUSTOMER ID: ";
+        cout << "1. Edit Customer Details" << endl;
+        cout << "\n Enter Customer ID: ";
         cin >> custID;
         cin.ignore();
 
         searchandUpdateCustomer(custID);
     }
+
 
     void searchandUpdateCustomer(string custID)
     {
@@ -401,23 +487,29 @@ public:
         {
             if (custID == current->customerID)
             {
-                cout << "Customer ID: " << current->customerID << endl;
+                cout << "Car Status: " << current->customerID << endl;
+                int answer;
+                cout << "Do you want to edit status of the car ? (1 - Yes, 0 - No) ";
+                cin >> answer;
+                cin.ignore();
+                if (answer == 1)
+                {
+                    //Updating details of the customer
+                    cout << "\nEnter Customer Name: ";
+                    getline(cin, current->customerName);
+                    cout << endl;
 
-                //Updating details of the customer
-                cout << "\nEnter Customer Name: ";
-                getline(cin, current->customerName);
-                cout << endl;
+
+                    cout << "\nEnter Customer Phone Number: ";
+                    cin >> current->customerPhoneNum;
+                    cout << endl;
 
 
-                cout << "\nEnter Customer Phone Number: ";
-                cin >> current->customerPhoneNum;
-                cout << endl;
+                    cout << "\nEnter Customer Deposit Amount: ";
+                    cin >> current->customerDeposit;
 
-
-                cout << "\nEnter Customer Deposit Amount: ";
-                cin >> current->customerDeposit;
-
-                displayUpdateCustomer(current->customerID);
+                }
+                displayUpdateCustomer();
                 return;
                 system("cls");
             }
@@ -428,21 +520,21 @@ public:
         //fill out atlernative if customer ID does not exist
     }
 
-    void displayUpdateCustomer(string custID) {
-
-        system("cls");
-        customer* customer = searchCustomerID(custID);
+    void displayUpdateCustomer() {
+        string customerIDInput;
+        cout << "Please input ID to view changes : ";
+        cin >> customerIDInput;
+        customer* customer = searchCustomerID(customerIDInput);
 
         // Print search results
 
         if (customer != NULL) {
-            cout << "Updated Customer Details\n" << endl;
             cout << "Customer ID            : " << customer->customerID << endl;
             cout << "Customer Name          : " << customer->customerName << endl;
             cout << "Customer Phone Number  : " << customer->customerPhoneNum << endl;
             cout << "Customer Deposit       : " << customer->customerDeposit<< endl;
             cout << endl;
-            cout << "Customer Details Successfully Updated" << endl;
+            cout << "Customer Details Successfully Changed" << endl;
         }
 
         if (customer != NULL)
@@ -459,6 +551,11 @@ public:
             csvFile.close();
         }
 
+        if (customer != NULL)
+        {
+            updateCustomerDetails(customerIDInput);
+        }
+
         else
         {
             cout << "Customer ID not found." << endl;
@@ -467,12 +564,143 @@ public:
         return;
     }
 
+    void updateCustomerDetails(string custID)
+    {
+        customer* current = custHead;
+        while (current != NULL)
+        {
+            if (custID == current->customerID)
+            {
+                cout << "Customer ID            : " << current->customerID << endl;
+                cout << "Customer Name          : " << current->customerName << endl;
+                cout << "customer Phone Number  : " << current->customerPhoneNum << endl;
+                cout << "customer Depsoit       : " << current->customerDeposit<< endl;
+
+                int answer;
+                cout << "do you want to edit status of the car ?  1 - yes, 0 - no: ";
+                cin >> answer;
+                if (answer == 1)
+                {
+                    cout << endl;
+                    cout << "enter customer name: " << endl;
+                    getline(cin, current->customerID);
+
+                    cout << "enter customer phone number: " << endl;
+                    cin >> current->customerPhoneNum;
+
+
+                }
+                return;
+            }
+            current = current->custNext;
+
+        }
+        cout << "Customer ID does not exist. Please try again. " << endl;
+    }
+
 };
 
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class Manager : public Staff{
+
+public:
+    void managerLogin()
+    {
+        //login function for staff
+        // Create an empty linked list
+        staff* head = NULL;
+
+        // Read data from CSV file and add users to the linked list
+        ifstream file("Manager.csv");
+        if (file.is_open()) {
+            string line, header;
+            getline(file, header);
+            while (getline(file, line)) {
+                stringstream ss(line);
+                string staffIDStr, staffName, staffPassword, staffPosition;
+                getline(ss, staffIDStr, ',');
+                getline(ss, staffName, ',');
+                getline(ss, staffPassword, ',');
+                getline(ss, staffPosition, ',');
+
+                //convert string to integer
+                int staffID = stoi(staffIDStr);
+                addStaff(&head, staffID, staffName, staffPassword, staffPosition);
+            }
+            file.close();
+        }
+        else {
+            cout << "Unable to open file" << endl;
+            return;
+        }
+
+        // Display the linked list
+        displayUsers(head);
+
+        // Get input from user and check if it matches a user in the linked list
+        string staffName, staffPassword;
+        cout << "ENTER USERNAME:";
+        getline(cin, staffName);
+        cout << endl;
+        cout << "ENTER PASSWORD:";
+        getline(cin, staffPassword);
+        if (checkUser(head, staffName, staffPassword)) {
+            cout << "LOGIN SUCCESSFUL!" << endl;
+        }
+        else {
+            cout << "LOGIN FAILED" << endl;
+            exit(0);
+        }
+
+        // Free memory used by the linked list
+        staff* current = head;
+        while (current != NULL) {
+            staff* next = current->staffNext;
+            delete current;
+            current = next;
+        }
+        head = NULL;
+
+        return;
+    }
+
+    void managerMainMenu()
+    {
+        int option = 0;
+        while ((option < 1) || (option > 5)) {
+            cout << endl << "----------MANAGER MENU----------";
+            cout << endl << "--1.SEARCH VEHICLE INFORMATION--";
+            cout << endl << "-----2.CREATE SALE INVOICE------";
+            cout << endl << "-----3.CREATE BILL INVOICE------";
+            cout << endl << "--------4.CREATE REPORT---------";
+            cout << endl << "-------------5.EXIT-------------" ;
+            cout << endl << "ENTER YOUR CHOICE HERE:";
+            cin >> option;
+            cout << endl;
+            cin.ignore();
+
+            switch (option) {
+            case 1:
+                // Search vehicle information
+                break;
+            case 2:
+                // Create sale invoice 
+                break;
+            case 3:
+                //Create Bill invoice
+                break;
+            case 4:
+                // Report
+                break;
+            default:
+                // End the program
+                cout << endl << "Thank you for using our system !!" << endl;
+                exit(0);
+            }
+        }
+    }
 
     void produceSaleInvoiceReport()
     {
@@ -1088,8 +1316,38 @@ int main()
 {
    // int listCount = 0;
    // CarList carlist;
+    Salesperson salesperson;
+    Manager manager;
    // string titleInput;
    // int CarID;
+    int loginOption = 0;
+
+    while ((loginOption < 1) || (loginOption > 3))
+    {
+        cout << "----------ONLINE CAR RESELLER----------" << endl;
+        cout << "-----PLEASE CHOOSE AN OPTION BELOW-----" << endl;
+        cout << "--------PRESS 1 FOR SALESPERSON--------" << endl;
+        cout << "----------PRESS 2 FOR MANAGER----------" << endl << endl;
+        cout << "ENTER YOUR CHOICE HERE:";
+        cin >> loginOption;
+        cout << endl;
+        cin.ignore();
+
+        switch (loginOption)
+        {
+        case 1:
+            salesperson.staffLogin();
+            salesperson.salespersonMainMenu();
+            break;
+        case 2:
+            manager.managerLogin();
+            manager.managerMainMenu();
+            break;
+        default:
+            cout << endl << "Goodbye!" << endl;
+            exit(0);
+        }
+    }
 
 
    // carlist.storeInCarLinkedList("carlist.csv");
@@ -1125,10 +1383,8 @@ int main()
    // }
    // return 0;
 
-
-    Salesperson salesperson;
-    salesperson.storeinCustomerLinkedList("customer.csv");
-    salesperson.manageCustomer();
+    //salesperson.storeinCustomerLinkedList("customer.csv");
+    //salesperson.manageCustomer();
     
 
 
