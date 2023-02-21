@@ -355,7 +355,7 @@ public:
             cout << "\t|| Status: " << car->carStatus << endl;
             cout << "\t===========================================================================================" << endl;
             cout << endl;
-            cout << "\tCar has been booked successfully" << endl;
+            cout << "\n\tCar has been booked successfully." << endl;
         }
 
         if (car != NULL)
@@ -419,95 +419,6 @@ public:
         }
         myfile.close();
     }
-
-
-    void bookCar()
-    {
-        int answer;
-        cout << "\tDo you want to book a car? 1 - Yes, 0 - No: ";
-        cin >> answer;
-        cin.ignore();
-
-        while (answer == 1)
-        {
-            int carID = displayCarListItemsBinary();
-            cout << "\n\tWould you like to confirm your booking? 1 - Yes, 0 - No: ";
-            cin >> answer;
-            SearchAndUpdateBasedCarID(carID);
-
-            cout << "\n\tWould you like to book another car? 1 - Yes, 0 - No: ";
-            cin >> answer;
-            cin.ignore();
-            system("pause");
-            system("cls");
-        }
-
-
-    }
-
-
-    int displayCarListItemsBinary() {
-        int carIDInput;
-        int choice;
-        cout << "\n\tEnter ID to search: ";
-        cin >> carIDInput;
-        car* car = binarySearch(carIDInput);
-
-        // Print search results
-
-        if (car->carStatus == "Booked")
-        {
-            cout << "\tCar has been booked !!" << endl;
-            cout << "\tDo you want to proceed with booking? 1 - Yes, 0 - No: ";
-            cin >> choice;
-
-            if (choice == 1)
-            {
-                bookCar();
-            }
-
-        }
-        if (car->carStatus == "Available") {
-            cout << "\n\t===========================================================================================" << endl;
-            cout << "\t|| ID: " << car->carID << endl;
-            cout << "\t||" << endl;
-            cout << "\t|| Title: " << car->carTitle << endl;
-            cout << "\t||" << endl;
-            cout << "\t|| Price: " << car->carPrice << endl;
-            cout << "\t||" << endl;
-            cout << "\t|| Registration Date: " << car->carRegistrationDate << endl;
-            cout << "\t||" << endl;
-            cout << "\t|| Mileage: " << car->carMileage << endl;
-            cout << "\t||" << endl;
-            cout << "\t|| Fuel Type: " << car->carFuelType << endl;
-            cout << "\t||" << endl;
-            cout << "\t|| Transmission: " << car->carTransmission << endl;
-            cout << "\t||" << endl;
-            cout << "\t|| Engine Size: " << car->carEngineSize << endl;
-            cout << "\t||" << endl;
-            cout << "\t|| Number of Doors: " << car->carDoorNum << endl;
-            cout << "\t||" << endl;
-            cout << "\t|| Colour: " << car->carColour << endl;
-            cout << "\t||" << endl;
-            cout << "\t|| Body Type: " << car->carBodyType << endl;
-            cout << "\t||" << endl;
-            cout << "\t|| URL: " << car->carURL << endl;
-            cout << "\t||" << endl;
-            cout << "\t|| Initial Sale Date: " << car->carInitialSaleDate << endl;
-            cout << "\t||" << endl;
-            cout << "\t|| Status: " << car->carStatus << endl;
-            cout << "\t===========================================================================================" << endl;
-
-        }
-        else  if (car == NULL)
-        {
-            cout << "\tCar ID not Found!" << endl;
-        }
-
-        return car->carID;
-    }
-
-
 
 
     int getCount()
@@ -731,10 +642,6 @@ public:
         }
         cout << endl;
     }
-
-
-
-
 };
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1009,7 +916,7 @@ class Salesperson : public Staff{
 
 public:
 
-    void staffLogin()
+    void salespersonLogin()
     {
         //login function for staff
         // Create an empty linked list
@@ -1040,22 +947,30 @@ public:
             return;
         }
 
+        salespersonLogin:
+
+        cout << "\t=====================" << endl;
+        cout << "\t||SALESPERSON LOGIN||" << endl;
+        cout << "\t=====================" << endl;
+
         // Display the linked list
         displayUsers(head);
 
         // Get input from user and check if it matches a user in the linked list
         string staffName, staffPassword;
-        cout << "\tENTER USERNAME:";
+        cout << "\n\tENTER USERNAME:";
         getline(cin, staffName);
         cout << endl;
-        cout << "\tENTER PASSWORD:";
+        cout << "\n\tENTER PASSWORD:";
         getline(cin, staffPassword);
         if (checkUser(head, staffName, staffPassword)) {
-            cout << endl << "\tLOGIN SUCCESSFUL!" << endl;
+            cout << endl << "\n\tLOGIN SUCCESSFUL!" << endl;
         }
         else {
-            cout << "\tLOGIN FAILED" << endl;
-            exit(0);
+            cout << "\n\tLOGIN FAILED!" << endl;
+            system("pause");
+            system("cls");
+            goto salespersonLogin;
         }
 
         // Free memory used by the linked list
@@ -1074,7 +989,6 @@ public:
     {
         int option = 0;
         while ((option < 1) || (option > 6)) {
-
 
             cout << "\n\t==========================================" << endl;
             cout << "\t||                                      ||" << endl;
@@ -1116,7 +1030,10 @@ public:
                 break;
 
             case 6:
-                cout << endl << "\tThank you for using our system !!" << endl;
+                cout << endl;
+                cout << "\t==================================" << endl;
+                cout << "\t||THANK YOU FOR USING OUR SYSTEM||" << endl;
+                cout << "\t==================================" << endl;
                 exit(0);
 
             default:
@@ -1127,12 +1044,98 @@ public:
 
 
 
-    void bookVehicle() {
-        //Booking vehilcle
+    void bookCar()
+    {
+        int answer;
+
+        bookCar:
+
+        int carID = displayCarListItemsBinary();
+        cout << "\n\tWould you like to confirm your booking? 1 - Yes, 0 - No: ";
+        cin >> answer;
+        SearchAndUpdateBasedCarID(carID);
+
+        cout << "\n\tWould you like to book another car? 1 - Yes, 0 - No: ";
+        cin >> answer;
+        if (answer = 1)
+        {
+            goto bookCar;
+        }
+        else {
+            salespersonMainMenu();
+        }
+    }
+
+
+    int displayCarListItemsBinary() {
+        int carIDInput;
+        int choice;
+        cout << "\n\tENTER CAR ID TO SEARCH: ";
+        cin >> carIDInput;
+        car* car = binarySearch(carIDInput);
+
+        // Print search results
+
+        if (car->carStatus == "Booked")
+        {
+            cout << "\n\tCar has already been booked successfully." << endl;
+            cout << "\n\tWould you like to book another car? 1 - Yes, 0 - No: ";
+            cin >> choice;
+
+            if (choice == 1)
+            {
+                bookCar();
+            }
+            else
+            {
+                salespersonMainMenu();
+            }
+
+        }
+        if (car->carStatus == "Available") {
+            cout << "\n\t===========================================================================================" << endl;
+            cout << "\t|| ID: " << car->carID << endl;
+            cout << "\t||" << endl;
+            cout << "\t|| Title: " << car->carTitle << endl;
+            cout << "\t||" << endl;
+            cout << "\t|| Price: " << car->carPrice << endl;
+            cout << "\t||" << endl;
+            cout << "\t|| Registration Date: " << car->carRegistrationDate << endl;
+            cout << "\t||" << endl;
+            cout << "\t|| Mileage: " << car->carMileage << endl;
+            cout << "\t||" << endl;
+            cout << "\t|| Fuel Type: " << car->carFuelType << endl;
+            cout << "\t||" << endl;
+            cout << "\t|| Transmission: " << car->carTransmission << endl;
+            cout << "\t||" << endl;
+            cout << "\t|| Engine Size: " << car->carEngineSize << endl;
+            cout << "\t||" << endl;
+            cout << "\t|| Number of Doors: " << car->carDoorNum << endl;
+            cout << "\t||" << endl;
+            cout << "\t|| Colour: " << car->carColour << endl;
+            cout << "\t||" << endl;
+            cout << "\t|| Body Type: " << car->carBodyType << endl;
+            cout << "\t||" << endl;
+            cout << "\t|| URL: " << car->carURL << endl;
+            cout << "\t||" << endl;
+            cout << "\t|| Initial Sale Date: " << car->carInitialSaleDate << endl;
+            cout << "\t||" << endl;
+            cout << "\t|| Status: " << car->carStatus << endl;
+            cout << "\t===========================================================================================" << endl;
+
+        }
+        else  if (car == NULL)
+        {
+            cout << "\tCar ID not Found!" << endl;
+        }
+
+        return car->carID;
     }
 
 
     void manageCustomer() {
+
+        system("cls");
 
         int userInput;
         cout << "\n\t============================================" << endl;
@@ -1164,6 +1167,7 @@ public:
             break;
 
         case 3:
+            system("cls");
             salespersonMainMenu();
 
         default:
@@ -1177,19 +1181,20 @@ public:
 
         string custID, custName, custPhoneNum;
 
-        cout << "\n\tENTER CUSTOMER ID           : ";
+        cout << "\n\tENTER CUSTOMER ID          : ";
         getline(cin, custID);
         cout << endl;
 
-        cout << "\tENTER CUSTOMER NAME         :  ";
+        cout << "\tENTER CUSTOMER NAME          :  ";
         getline(cin, custName);
         cout << endl;
 
-        cout << "\n\tENTER CUSTOMER PHONE NUMBER :  ";
+        cout << "\n\tENTER CUSTOMER PHONE NUMBER:  ";
         getline(cin, custPhoneNum);
         cout << endl << endl;
 
         createNewCustomerNode(custID, custName, custPhoneNum, NULL);
+
         cout << "\tNEWLY ADDED CUSTOMER DETAILS\n" << endl;
         cout << "\t============================================================" << endl;
         cout << "\t" << endl;
@@ -1223,7 +1228,18 @@ public:
         {
             if (custID == current->customerID)
             {
-                cout << "\n\tCUSTOMER ID: " << current->customerID << endl;
+                cout << "\n\t\n" << endl;
+                cout << "\t============================================================" << endl;
+                cout << "\t||" << endl;
+                cout << "\t|| CUSTOMER ID            : " << current->customerID << endl;
+                cout << "\t||" << endl;
+                cout << "\t|| CUSTOMER NAME          : " << current->customerName << endl;
+                cout << "\t||" << endl;
+                cout << "\t|| CUSTOMER PHONE NUMBER  : " << current->customerPhoneNum << endl;
+                cout << "\t||" << endl;
+                cout << "\t|| CUSTOMER DEPOSIT       : RM " << current->customerDeposit << endl;
+                cout << "\t||" << endl;
+                cout << "\t============================================================" << endl;
 
                 //Updating details of the customer
                 cout << "\n\tENTER CUSTOMER NAME: ";
@@ -1248,8 +1264,8 @@ public:
         }
         int userInput;
 
-        cout << "\n\tCustomer ID does not exist. Press any key to return to Manager Section.";
-        Sleep(2000);
+        cout << "\n\tCustomer ID does not exist. Returning to Manager Menu Section...";
+        system("pause");
         manageCustomer();
     }
 
@@ -1277,8 +1293,7 @@ public:
 
             cout << endl;
             cout << "\tCustomer Details Successfully Updated!" << endl;
-            Sleep(3);
-            system("cls");
+            system("pause");
             manageCustomer();
         }
 
@@ -1344,8 +1359,15 @@ public:
             return;
         }
 
+        managerLogin:
+
+        cout << "\t=====================" << endl;
+        cout << "\t||  MANAGER LOGIN  ||" << endl;
+        cout << "\t=====================" << endl;
+
         // Display the linked list
         displayUsers(head);
+
 
         // Get input from user and check if it matches a user in the linked list
         string staffName, staffPassword;
@@ -1355,11 +1377,13 @@ public:
         cout << "\n\tENTER PASSWORD:";
         getline(cin, staffPassword);
         if (checkUser(head, staffName, staffPassword)) {
-            cout << "\n\tLOGIN SUCCESSFUL!" << endl;
+            cout << endl << "\n\tLOGIN SUCCESSFUL!" << endl;
         }
         else {
-            cout << "LOGIN FAILED" << endl;
-            exit(0);
+            cout << "\n\tLOGIN FAILED!" << endl;
+            system("pause");
+            system("cls");
+            goto managerLogin;
         }
 
         // Free memory used by the linked list
@@ -1412,7 +1436,10 @@ public:
                 // Report
                 break;
             case 6:
-                cout << endl << "\tThank you for using our system !!" << endl;
+                cout << endl;
+                cout << "\t==================================" << endl;
+                cout << "\t||THANK YOU FOR USING OUR SYSTEM||" << endl;
+                cout << "\t==================================" << endl;
                 exit(0);
 
             default:
@@ -1443,7 +1470,7 @@ int main(){
     salesperson.storeinCustomerLinkedList("customer.csv");
     salesperson.storeInCarLinkedList("carlist.csv");
 
-
+    menu:
    // string titleInput;
    // int CarID;
     int loginOption = 0;
@@ -1457,11 +1484,13 @@ int main(){
         cout << "\t||                                      ||" << endl;
         cout << "\t==========================================" << endl;
         cout << "\t||                                      ||" << endl;
-        cout << "\t||      Menu Options:                   ||" << endl;
+        cout << "\t||           MENU OPTIONS:              ||" << endl;
         cout << "\t||                                      ||" << endl;
-        cout << "\t||       1. SALESPERSON                 ||" << endl;
+        cout << "\t||           1. SALESPERSON             ||" << endl;
         cout << "\t||                                      ||" << endl;
-        cout << "\t||       2. MANAGER                     ||" << endl;
+        cout << "\t||           2. MANAGER                 ||" << endl;
+        cout << "\t||                                      ||" << endl;
+        cout << "\t||           3. EXIT                    ||" << endl;
         cout << "\t||                                      ||" << endl;
         cout << "\t==========================================\n" << endl;
 
@@ -1474,19 +1503,31 @@ int main(){
         switch (loginOption)
         {
         case 1:
-            salesperson.staffLogin();
+            salesperson.salespersonLogin();
             salesperson.salespersonMainMenu();
             break;
         case 2:
             manager.managerLogin();
             manager.managerMainMenu();
             break;
-        default:
-            cout << endl << "Goodbye!" << endl;
+
+        case 3:
+            cout << endl;
+            cout << "\t==================================" << endl;
+            cout << "\t||THANK YOU FOR USING OUR SYSTEM||" << endl;
+            cout << "\t==================================" << endl;
             exit(0);
+
+        default:
+            cout << "Invalid Choice." << endl;
+            system("pause");
+            system("cls");
+            goto menu;
         }
     }
 }
+
+
 
 // int main()
 // {
