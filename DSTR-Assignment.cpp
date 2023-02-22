@@ -59,6 +59,32 @@ struct salesReport
     //variables for sales report
 };
 
+struct salesInvoice
+{
+    //variables for sales report
+    string invoiceID;
+    string customerID;
+    int carID;
+    string customerName;
+    string customerPhoneNum;
+    double customerDeposit;
+    customer* custNext;
+    string carTitle;
+    int carPrice;
+    int carRegistrationDate;
+    int carMileage;
+    string carFuelType;
+    string carTransmission;
+    string carEngineSize;
+    int carDoorNum;
+    string carColour;
+    string carBodyType;
+    string carURL;
+    string carInitialSaleDate;
+    string carStatus;
+    salesInvoice* invoiceNext;
+};
+
 struct billReport
 {
     //variable for bill report
@@ -67,7 +93,7 @@ struct billReport
 
 struct customerReport
 {
-   //variables for customer report
+    //variables for customer report
 };
 
 
@@ -276,29 +302,72 @@ public:
                 newNode->carFuelType, newNode->carTransmission, newNode->carEngineSize, newNode->carDoorNum, newNode->carColour,
                 newNode->carBodyType, newNode->carURL, newNode->carInitialSaleDate, newNode->carStatus);
         }
-
         return;
     }
 
     // Function to search for an ID in linked list using linear search
-    car* searchID(int id) {
+    car* searchCarID() {
         car* current = carHead;
 
+        int carIDInput;
+        
+        cout << "\n\tENTER CAR ID TO SEARCH: ";
+        cin >> carIDInput;
+        
+
         // Traverse linked list
-        while (current != NULL) {
+        while (current != NULL) {   
             // Check if current node's ID matches search ID
-            if (current->carID == id) {
+            if (current->carID == carIDInput) {
+
+                system("cls");
+
+                cout << "\t=====================" << endl;
+                cout << "\t||   CAR DETAILS   ||" << endl;
+                cout << "\t=====================" << endl;
+
+                cout << "\n\t===========================================================================================" << endl;
+                cout << "\t||" << endl;
+                cout << "\t|| ID: " << current->carID << endl;
+                cout << "\t||" << endl;
+                cout << "\t|| Title: " << current->carTitle << endl;
+                cout << "\t||" << endl;
+                cout << "\t|| Price: " << current->carPrice << endl;
+                cout << "\t||" << endl;
+                cout << "\t|| Registration Date: " << current->carRegistrationDate << endl;
+                cout << "\t||" << endl;
+                cout << "\t|| Mileage: " << current->carMileage << endl;
+                cout << "\t||" << endl;
+                cout << "\t|| Fuel Type: " << current->carFuelType << endl;
+                cout << "\t||" << endl;
+                cout << "\t|| Transmission: " << current->carTransmission << endl;
+                cout << "\t||" << endl;
+                cout << "\t|| Engine Size: " << current->carEngineSize << endl;
+                cout << "\t||" << endl;
+                cout << "\t|| Number of Doors: " << current->carDoorNum << endl;
+                cout << "\t||" << endl;
+                cout << "\t|| Colour: " << current->carColour << endl;
+                cout << "\t||" << endl;
+                cout << "\t|| Body Type: " << current->carBodyType << endl;
+                cout << "\t||" << endl;
+                cout << "\t|| URL: " << current->carURL << endl;
+                cout << "\t||" << endl;
+                cout << "\t|| Initial Sale Date: " << current->carInitialSaleDate << endl;
+                cout << "\t||" << endl;
+                cout << "\t|| Status: " << current->carStatus << endl;
+                cout << "\t===========================================================================================" << endl;
+
                 return current;
             }
             current = current->carNext;
         }
 
+        cout << "Car ID does not exist." << endl;
         return NULL;
     }
 
 
-
-    void SearchAndUpdateBasedCarID(int CarID)
+    void searchAndUpDateBasedCarID(int CarID)
     {
         car* current = carHead;
         while (current != NULL)
@@ -419,7 +488,22 @@ public:
         }
         myfile.close();
     }
+    car* displayCarDetailsinvoice(int carIDInput) {
 
+        car* car = binarySearch(carIDInput);
+
+        // Print search results
+        if (car != NULL) {
+            cout << "Car ID found " << endl;
+            return car;
+        }
+        else {
+            cout << "Car ID not Found1" << endl;
+
+        }
+
+        return NULL;
+    }
 
     int getCount()
     {
@@ -624,18 +708,57 @@ public:
     }
 
 
-    void searchItemBasedOnKeyword(string keyword)
+    void searchItemBasedOnKeyword()
     {
+        string keyword;
+        
+        cout << "\n\tENTER KEYWORD TO SEARCH: ";
+        getline(cin, keyword);
+        cin.ignore();
+
         car* current = carHead;
         int i = 0;
-        cout << "The car list contains the keyword of '" << keyword << "' as below: " << endl;
+        cout << "\tSearching for '" << keyword << "': " << endl;
 
         while (current != NULL)
         {                                                           //Don't use -1 because index may not be correct and cause error as it is a string
             if (current->carTitle.find(keyword) != string::npos) //string::npos not a single row or column has the keyword 
             {
                 i++;
-                cout << i << ". " << current->carTitle << " " << current->carID << " - " << current->carID << endl;
+
+                cout << "\t=====================" << endl;
+                cout << "\t||   CAR DETAILS   ||" << endl;
+                cout << "\t=====================" << endl;
+
+                cout << "\n\t===========================================================================================" << endl;
+                cout << "\t|| Car ID: " << current->carID << endl;
+                cout << "\t||" << endl;
+                cout << "\t|| Title: " << current->carTitle << endl;
+                cout << "\t||" << endl;
+                cout << "\t|| Price: " << current->carPrice << endl;
+                cout << "\t||" << endl;
+                cout << "\t|| Registration Date: " << current->carRegistrationDate << endl;
+                cout << "\t||" << endl;
+                cout << "\t|| Mileage: " << current->carMileage << endl;
+                cout << "\t||" << endl;
+                cout << "\t|| Fuel Type: " << current->carFuelType << endl;
+                cout << "\t||" << endl;
+                cout << "\t|| Transmission: " << current->carTransmission << endl;
+                cout << "\t||" << endl;
+                cout << "\t|| Engine Size: " << current->carEngineSize << endl;
+                cout << "\t||" << endl;
+                cout << "\t|| Number of Doors: " << current->carDoorNum << endl;
+                cout << "\t||" << endl;
+                cout << "\t|| Colour: " << current->carColour << endl;
+                cout << "\t||" << endl;
+                cout << "\t|| Body Type: " << current->carBodyType << endl;
+                cout << "\t||" << endl;
+                cout << "\t|| URL: " << current->carURL << endl;
+                cout << "\t||" << endl;
+                cout << "\t|| Initial Sale Date: " << current->carInitialSaleDate << endl;
+                cout << "\t||" << endl;
+                cout << "\t|| Status: " << current->carStatus << endl;
+                cout << "\t===========================================================================================" << endl;
                 current = current->carNext;
             }
             current = current->carNext;
@@ -646,7 +769,7 @@ public:
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class Staff : public CarList{
+class Staff : public CarList {
 
 
 public:
@@ -656,6 +779,9 @@ public:
 
     customer* custHead = NULL;
     customer* custTail = NULL;
+
+    salesInvoice* saleInvoiceHead = NULL;
+    salesInvoice* saleInvoiceTail = NULL;
 
     staff* createStaff(int staffID, string staffName, string staffPassword, string staffPosition) {
         staff* newStaffNode = new staff;
@@ -713,13 +839,13 @@ public:
         newCustNode->customerName = customerName;
         newCustNode->customerPhoneNum = customerPhoneNum;
         newCustNode->customerDeposit = customerDeposit;
-        
+
         newCustNode->custNext = NULL; //always start with NULL first in newnode
 
         //3. return back the new created node to the other function
         return newCustNode;
     }
-    
+
     customer* insertToTheEndList(string customerID, string customerName, string customerPhoneNum, double customerDeposit)
     {
         //create a new customer node
@@ -862,49 +988,501 @@ public:
         }
         return custHead;
     }
-
-
-    void searchItemBasedOnKeyword(string keyword)
-    {
-
+    // to be Review section
+    customer* searchCustomerIDinvoice(string keyword) {
         customer* current = custHead;
-        int i = 0;
-        cout << "Search Keyword: '" << keyword << endl;
-        cout << "Items in list found below:" << endl;
 
-        while (current != NULL)
-        {                                                           //Don't use -1 because index may not be correct and cause error as it is a string
-            if (current->customerName.find(keyword) != string::npos) //string::npos not a single row or column has the keyword 
-            {
-                i++;
-                cout << i << ". " << current->customerID << " - " << current->customerName << " - " << current->customerPhoneNum << " - " << current->customerDeposit
-                    << endl;
-                current = current->custNext;
+        // traverse linked list
+        while (current != NULL) {
+            // check if current node's customer id matches search id
+            if (current->customerID == keyword) {
+                return current;
             }
             current = current->custNext;
         }
-        cout << endl;
+        return NULL;
+    }
+    customer* displayCustomerDetailsinvoice(string custID) {
+
+        customer* Customer = searchCustomerIDinvoice(custID);
+
+        // search for customer
+        if (Customer != NULL) {
+
+            cout << "Customer Details found1" << endl;
+            return Customer;
+        }
+        else {
+            cout << "Customer Details not found" << endl;
+            return NULL;
+        }
+
     }
 
-    void login()
+
+    //void searchItemBasedOnKeyword(string keyword)
+    //{
+
+    //    customer* current = custHead;
+    //    int i = 0;
+    //    cout << "Search Keyword: '" << keyword << endl;
+    //    cout << "Items in list found below:" << endl;
+
+    //    while (current != NULL)
+    //    {                                                           //Don't use -1 because index may not be correct and cause error as it is a string
+    //        if (current->customerName.find(keyword) != string::npos) //string::npos not a single row or column has the keyword 
+    //        {
+    //            i++;
+    //            cout << i << ". " << current->customerID << " - " << current->customerName << " - " << current->customerPhoneNum << " - " << current->customerDeposit
+    //                << endl;
+    //            current = current->custNext;
+    //        }
+    //        current = current->custNext;
+    //    }
+    //    cout << endl;
+    //}
+
+    salesInvoice* insertToinvoiceEndList(
+        string invoiceID,
+        string customerID,
+        int carID,
+        string customerName,
+        string customerPhoneNum,
+        double customerDeposit,
+        string carTitle,
+        int carPrice,
+        int carRegistrationDate,
+        int carMileage,
+        string carFuelType,
+        string carTransmission,
+        string carEngineSize,
+        int carDoorNum,
+        string carColour,
+        string carBodyType,
+        string carURL,
+        string carInitialSaleDate,
+        string carStatus)
     {
-        //login function
+        //create a new customer node
+        salesInvoice* newinvoiceNode = new salesInvoice;
+        newinvoiceNode->invoiceID = invoiceID;
+        newinvoiceNode->customerID = customerID;
+        newinvoiceNode->carID = carID;
+        newinvoiceNode->customerName = customerName;
+        newinvoiceNode->customerPhoneNum = customerPhoneNum;
+        newinvoiceNode->customerDeposit = customerDeposit;
+        newinvoiceNode->carTitle = carTitle;
+        newinvoiceNode->carPrice = carPrice;
+        newinvoiceNode->carRegistrationDate = carRegistrationDate;
+        newinvoiceNode->carMileage = carMileage;
+        newinvoiceNode->carFuelType = carFuelType;
+        newinvoiceNode->carTransmission = carTransmission;
+        newinvoiceNode->carEngineSize = carEngineSize;
+        newinvoiceNode->carDoorNum = carDoorNum;
+        newinvoiceNode->carColour = carColour;
+        newinvoiceNode->carBodyType = carBodyType;
+        newinvoiceNode->carURL = carURL;
+        newinvoiceNode->carInitialSaleDate = carInitialSaleDate;
+        newinvoiceNode->carStatus = carStatus;
+
+        newinvoiceNode->invoiceNext = NULL;
+
+        //attach your new customer node to the list
+        if (saleInvoiceHead == NULL) //list still empty
+        {
+            saleInvoiceHead = newinvoiceNode;
+        }
+        else //list is not empty
+        {
+            salesInvoice* current = saleInvoiceHead;
+
+            while (current->invoiceNext != NULL)
+            {
+                current = current->invoiceNext;
+            }
+            //if found the last node? ->attach the new node into the end of the last node
+            current->invoiceNext = newinvoiceNode;
+        }
+
+        return saleInvoiceHead;
     }
 
-    void searchVehicle()
+    void storeinSalesInvoiceLinkedList(string fileName) {
+        ifstream file(fileName);
+        string line;
+        //customer* staffTail = NULL;
+        string InvoiceHeader;
+
+        // Read data from CSV file
+        // Each iteration creates a new car with car objects listed below in the nested while loop
+
+        getline(file, InvoiceHeader);
+        while (getline(file, line)) {
+            stringstream ss(line);
+            string cell;
+            int i = 0;
+            salesInvoice* newinvoiceNode = new salesInvoice;
+
+            // Parse CSV line
+            while (getline(ss, cell, ',')) {
+                switch (i) {
+                case 0:
+                    newinvoiceNode->invoiceID = cell;
+                    break;
+                case 1:
+                    newinvoiceNode->customerID = cell;
+                    break;
+                case 2:
+                    newinvoiceNode->carID = stod(cell);
+
+                    break;
+                case 3:
+                    newinvoiceNode->customerName = cell;
+                    break;
+                case 4:
+                    newinvoiceNode->customerPhoneNum = cell;
+                    break;
+                case 5:
+                    newinvoiceNode->customerDeposit = stod(cell);
+                    break;
+                case 6:
+                    newinvoiceNode->carTitle = cell;
+
+                    break;
+                case 7:
+                    newinvoiceNode->carPrice = stod(cell);
+
+                    break;
+                case 8:
+                    newinvoiceNode->carRegistrationDate = stod(cell);
+                    break;
+                case 9:
+                    newinvoiceNode->carMileage = stod(cell);
+                    break;
+                case 10:
+                    newinvoiceNode->carFuelType = cell;
+                    break;
+                case 11:
+                    newinvoiceNode->carTransmission = cell;
+                    break;
+                case 12:
+                    newinvoiceNode->carEngineSize = cell;
+                    break;
+                case 13:
+                    newinvoiceNode->carDoorNum = stod(cell);
+                    break;
+                case 14:
+                    newinvoiceNode->carColour = cell;
+                    break;
+                case 15:
+                    newinvoiceNode->carBodyType = cell;
+                    break;
+                case 16:
+                    newinvoiceNode->carURL = cell;
+                    break;
+                case 17:
+                    newinvoiceNode->carInitialSaleDate = cell;
+                    break;
+                case 18:
+                    newinvoiceNode->carStatus = cell;
+                    break;
+
+                }
+                i++;
+            }
+            insertToinvoiceEndList(newinvoiceNode->invoiceID,
+                newinvoiceNode->customerID,
+                newinvoiceNode->carID,
+                newinvoiceNode->customerName,
+                newinvoiceNode->customerPhoneNum,
+                newinvoiceNode->customerDeposit,
+                newinvoiceNode->carTitle,
+                newinvoiceNode->carPrice,
+                newinvoiceNode->carRegistrationDate,
+                newinvoiceNode->carMileage,
+                newinvoiceNode->carFuelType,
+                newinvoiceNode->carTransmission,
+                newinvoiceNode->carEngineSize,
+                newinvoiceNode->carDoorNum,
+                newinvoiceNode->carColour,
+                newinvoiceNode->carBodyType,
+                newinvoiceNode->carURL,
+                newinvoiceNode->carInitialSaleDate,
+                newinvoiceNode->carStatus);
+        }
+        return;
+    }
+
+    void createSalesInvoice() {
+
+        storeinCustomerLinkedList("customer.csv");
+
+        cout << "\nCreate Sales Invoice ";
+
+        string custID;
+        cout << "\nEnter custID: ";
+        cin >> custID;
+
+        customer* Customer = displayCustomerDetailsinvoice(custID);
+
+        if (Customer != NULL)
+        {
+            cout << "Customer Details\n" << endl;
+            cout << "Customer ID            : " << Customer->customerID << endl;
+            cout << "Customer Name          : " << Customer->customerName << endl;
+            cout << "Customer Phone Number  : " << Customer->customerPhoneNum << endl;
+            cout << "Customer Deposit       : RM " << Customer->customerDeposit << endl;
+            cout << endl;
+
+        }
+
+        int carID;
+        cout << "\nEnter carID: ";
+        cin >> carID;
+
+        CarList carlist;
+        carlist.storeInCarLinkedList("carlist.csv");
+        car* Car = carlist.displayCarDetailsinvoice(carID);
+
+
+        string invoiceid;
+        cout << "\nEnter invoiceID: ";
+        cin >> invoiceid;
+        cout << "Invoice ID is : " << invoiceid << endl;
+
+
+        if (Car != NULL)
+        {
+            cout << "ID: " << Car->carID << endl;
+            cout << "Title: " << Car->carTitle << endl;
+            cout << "Price: " << Car->carPrice << endl;
+            cout << "Registration Date: " << Car->carRegistrationDate << endl;
+            cout << "Mileage: " << Car->carMileage << endl;
+            cout << "Fuel Type: " << Car->carFuelType << endl;
+            cout << "Transmission: " << Car->carTransmission << endl;
+            cout << "Engine Size: " << Car->carEngineSize << endl;
+            cout << "Number of Doors: " << Car->carDoorNum << endl;
+            cout << "Colour: " << Car->carColour << endl;
+            cout << "Body Type: " << Car->carBodyType << endl;
+            cout << "URL: " << Car->carURL << endl;
+            cout << "Initial Sale Date: " << Car->carInitialSaleDate << endl;
+            cout << "Status: " << Car->carStatus << endl;
+
+            std::ofstream csvFile("Invoice.csv", std::ios_base::app);
+
+            csvFile << invoiceid << ","
+                << Customer->customerID << ","
+                << Car->carID << ","
+                << Customer->customerName << ","
+                << Customer->customerPhoneNum << ","
+                << Customer->customerDeposit << ","
+                << Car->carTitle << ","
+                << Car->carPrice << ","
+                << Car->carRegistrationDate << ","
+                << Car->carMileage << ","
+                << Car->carFuelType << ","
+                << Car->carTransmission << ","
+                << Car->carEngineSize << ","
+                << Car->carDoorNum << ","
+                << Car->carColour << ","
+                << Car->carBodyType << ","
+                << Car->carURL << ","
+                << Car->carInitialSaleDate << ","
+                << Car->carStatus << std::endl;
+
+            // Close the CSV file
+            csvFile.close();
+
+        }
+    }
+
+
+    salesInvoice* searchinvoiceID(string keyword) {
+        salesInvoice* current = saleInvoiceHead;
+
+        // traverse linked list
+        while (current != NULL) {
+            // check if current node's customer id matches search id
+            if (current->invoiceID == keyword) {
+                return current;
+            }
+            current = current->invoiceNext;
+        }
+        return NULL;
+    }
+
+
+    salesInvoice* displayInvoiceDetails(string invoiceid) {
+
+        salesInvoice* invoiceID = searchinvoiceID(invoiceid);
+
+        // search for customer
+        if (invoiceID != NULL) {
+
+            cout << "Invoice ID found" << endl;
+            return invoiceID;
+        }
+        else {
+            cout << "Invoice ID not found" << endl;
+            return NULL;
+        }
+
+    }
+
+
+    //if 2 display invoice
+    salesInvoice* displaySaleInvoice() {
+
+        string invoiceid;
+        cout << "\nEnter invoiceID: ";
+        cin >> invoiceid;
+        salesInvoice* createBill = displayInvoiceDetails(invoiceid);
+
+        if (createBill != NULL) {
+            cout << "Invoice ID is            : " << createBill->invoiceID << endl;
+            cout << "Customer Details\n" << endl;
+            cout << "Customer ID              : " << createBill->customerID << endl;
+            cout << "Car ID                   : " << createBill->carID << endl;
+            cout << "Customer Name            : " << createBill->customerName << endl;
+            cout << "Customer Phone number    : " << createBill->customerPhoneNum << endl;
+
+            cout << "Customer Deposit         : " << createBill->customerDeposit << endl;
+            cout << "Car title                : " << createBill->carTitle << endl;
+            cout << "Car Price                : " << createBill->carPrice << endl;
+            cout << "Car Registretion date    : " << createBill->carRegistrationDate << endl;
+
+            cout << "Car Mileage              : " << createBill->carMileage << endl;
+            cout << "Car Fuel Type            : " << createBill->carFuelType << endl;
+            cout << "Car Transmission         : " << createBill->carTransmission << endl;
+            cout << "Car Engine size          : " << createBill->carEngineSize << endl;
+
+            cout << "Car Door number          : " << createBill->carDoorNum << endl;
+            cout << "CCar Colour              : " << createBill->carColour << endl;
+            cout << "Car Body Type            : " << createBill->carBodyType << endl;
+            cout << "Car URL                  : " << createBill->carURL << endl;
+            cout << "Car Initial Sale Date    : " << createBill->carInitialSaleDate << endl;
+            cout << "Car Status               : " << createBill->carStatus << endl;
+            cout << endl;
+            cout << "Bill Generated" << endl;
+        }
+        return createBill;
+    }
+
+    void saleInvoice()
     {
-        //search vehicle
-    }
+        CarList carlist;
+        Staff staff;
 
-    void createSalesInvoice()
-    {
-        //create Sales Invoice
-    }
+        //Storing Content from CSV Files into Linked List
+        storeinCustomerLinkedList("customer.csv");
+        carlist.storeInCarLinkedList("carlist.csv");
+        storeinSalesInvoiceLinkedList("Invoice.csv");
 
+        //prompts for choice
+
+        int option = 0;
+        while ((option < 1) || (option > 3)) {
+            cout << "1. Create Invoice for customer " << endl;
+            cout << "2. View Invoice for customer " << endl;
+            cin >> option;
+            cout << endl;
+            cin.ignore();
+
+            switch (option) {
+            case 1:
+                createSalesInvoice();
+                break;
+            case 2:
+                displaySaleInvoice();
+                break;
+            default:
+                // End the program
+                cout << endl << "Any other key to exit !!" << endl;
+                exit(0);
+            }
+        }
+    }
 
     void createBill()
     {
         //creating Bill
+         // output from invoice CSV
+         //generate Bill 
+
+         //bill amount will be price - invoice
+
+        CarList carlist;
+        Staff staff;
+        storeinCustomerLinkedList("customer.csv");
+        carlist.storeInCarLinkedList("carlist.csv");
+        storeinSalesInvoiceLinkedList("Invoice.csv");
+
+        cout << "Create sales page " << endl;
+        salesInvoice* createBill = displaySaleInvoice();
+        if (createBill != NULL) {
+            createBill->invoiceID;
+
+            createBill->customerID;
+            createBill->carID;
+            createBill->customerName;
+            createBill->customerPhoneNum;
+
+            createBill->customerDeposit;
+            createBill->carTitle;
+            createBill->carPrice;
+            createBill->carRegistrationDate;
+
+            createBill->carMileage;
+            createBill->carFuelType;
+            createBill->carTransmission;
+            createBill->carEngineSize;
+
+            createBill->carDoorNum;
+            createBill->carColour;
+            createBill->carBodyType;
+            createBill->carURL;
+            createBill->carInitialSaleDate;
+            createBill->carStatus;
+
+        }  //This code assumes that createBill is a pointer to an object with carPrice and 
+        //customerDeposit member variables. It subtracts the customerDeposit from the 
+        //carPrice and prints the result to the console along with the original values of carPrice and customerDeposit.
+
+        cout << "Car Price                : " << createBill->carPrice << endl;
+        cout << "Customer Deposit         : " << createBill->customerDeposit << endl;
+        cout << "Outstanding amount       : " << createBill->carPrice - createBill->customerDeposit << endl;
+        cout << "Full payment has been received " << endl;
+
+
+        std::ofstream csvFile("createbill.csv", std::ios_base::app);
+
+        csvFile << createBill->invoiceID << ","
+
+            << createBill->customerID << ","
+            << createBill->carID << ","
+            << createBill->customerName << ","
+            << createBill->customerPhoneNum << ","
+
+            << createBill->customerDeposit << ","
+            << createBill->carTitle << ","
+            << createBill->carPrice << ","
+            << createBill->carRegistrationDate << ","
+
+            << createBill->carMileage << ","
+            << createBill->carFuelType << ","
+            << createBill->carTransmission << ","
+            << createBill->carEngineSize << ","
+
+            << createBill->carDoorNum << ","
+            << createBill->carColour << ","
+            << createBill->carBodyType << ","
+            << createBill->carURL << ","
+            << createBill->carInitialSaleDate << ","
+            << createBill->carStatus << std::endl;
+
+        // Close the CSV file
+        csvFile.close();
+
     }
 
 };
@@ -912,7 +1490,7 @@ public:
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class Salesperson : public Staff{
+class Salesperson : public Staff {
 
 public:
 
@@ -947,14 +1525,14 @@ public:
             return;
         }
 
-        salespersonLogin:
+    salespersonLogin:
 
         cout << "\t=====================" << endl;
         cout << "\t||SALESPERSON LOGIN||" << endl;
         cout << "\t=====================" << endl;
 
         // Display the linked list
-        displayUsers(head);
+        /*displayUsers(head);*/
 
         // Get input from user and check if it matches a user in the linked list
         string staffName, staffPassword;
@@ -964,7 +1542,9 @@ public:
         cout << "\n\tENTER PASSWORD:";
         getline(cin, staffPassword);
         if (checkUser(head, staffName, staffPassword)) {
-            cout << endl << "\n\tLOGIN SUCCESSFUL!" << endl;
+            cout << endl << "\n\tLOGIN SUCCESSFUL!\n" << endl;
+            system("pause");
+            system("cls");
         }
         else {
             cout << "\n\tLOGIN FAILED!" << endl;
@@ -985,10 +1565,13 @@ public:
         return;
     }
 
+
     void salespersonMainMenu()
     {
-        int option = 0;
-        while ((option < 1) || (option > 6)) {
+        system("cls");
+     
+        char option;
+        while ((option = '1') || (option = '2') || (option = '3') || (option = '4') || (option = '5') || (option = '6')) {
 
             cout << "\n\t==========================================" << endl;
             cout << "\t||                                      ||" << endl;
@@ -1011,25 +1594,26 @@ public:
             cin.ignore();
 
             switch (option) {
-            case 1:
+            case '1':
                 // Search vehicle information
+                searchCarMenu();
                 break;
-            case 2:
+            case '2':
                 // Create sale invoice 
                 break;
-            case 3:
+            case '3':
                 //Create Bill invoice
                 break;
-            case 4:
+            case '4':
                 // Book the vehicle
                 bookCar();
                 break;
-            case 5:
+            case '5':
                 // Manage client information
                 manageCustomer();
                 break;
 
-            case 6:
+            case '6':
                 cout << endl;
                 cout << "\t==================================" << endl;
                 cout << "\t||THANK YOU FOR USING OUR SYSTEM||" << endl;
@@ -1037,32 +1621,96 @@ public:
                 exit(0);
 
             default:
-                cout << "\tInvalid Input! Please try again";
+                cout << "\tInvalid Input! Please try again" << endl;;
+                system("pause");
+                system("cls");
+                salespersonMainMenu();
             }
         }
     }
 
+
+    void searchCarMenu()
+    {
+        //search vehicle
+
+    searchCarSection:
+
+        system("cls");
+
+        string userInput;
+        
+        cout << "\n\t==========================================" << endl;
+        cout << "\t||                                      ||" << endl;
+        cout << "\t||          SEARCH CAR SECTION          ||" << endl;
+        cout << "\t||                                      ||" << endl;
+        cout << "\t==========================================" << endl;
+        cout << "\t||                                      ||" << endl;
+        cout << "\t||       1. SEARCH CAR ID               ||" << endl;
+        cout << "\t||       2. SEARCH CAR TITLE            ||" << endl;
+        cout << "\t||       3. GO BACK                     ||" << endl;
+        cout << "\t||                                      ||" << endl;
+        cout << "\t==========================================\n" << endl;
+
+
+        cout << endl << "\n\tENTER YOUR CHOICE HERE:";
+        cin >> userInput;
+        cout << endl;
+        cin.ignore();
+
+        if (userInput == "1") {
+            // Search Vehicle Information (Car ID)
+            searchCarID();
+            system("pause");
+            goto searchCarSection;
+        }
+
+        else if (userInput == "2") {
+            // Search Vehicle Information (Keyword in Title)
+            searchItemBasedOnKeyword();
+            system("pause");
+            goto searchCarSection;
+        }
+        else if (userInput == "3") {
+            salespersonMainMenu();
+        }
+
+        else{
+            cout << "\tInvalid Input! Please try again." << endl;;
+            system("pause");
+            system("cls");
+            goto searchCarSection;
+        }
+    }
 
 
     void bookCar()
     {
         int answer;
 
-        bookCar:
+    bookCar:
 
         int carID = displayCarListItemsBinary();
         cout << "\n\tWould you like to confirm your booking? 1 - Yes, 0 - No: ";
         cin >> answer;
-        SearchAndUpdateBasedCarID(carID);
+        if (answer != 1)
+        {
+            system("cls");
+            salespersonMainMenu();
+        }
+        else{
+            searchAndUpDateBasedCarID(carID);
+        }
 
         cout << "\n\tWould you like to book another car? 1 - Yes, 0 - No: ";
         cin >> answer;
-        if (answer = 1)
+        if (answer != 1)
         {
-            goto bookCar;
+            system("cls");
+            salespersonMainMenu();
         }
         else {
-            salespersonMainMenu();
+            goto bookCar;
         }
     }
 
@@ -1079,22 +1727,28 @@ public:
         if (car->carStatus == "Booked")
         {
             cout << "\n\tCar has already been booked successfully." << endl;
+
+            invalidInput:
             cout << "\n\tWould you like to book another car? 1 - Yes, 0 - No: ";
             cin >> choice;
 
-            if (choice == 1)
-            {
+            if (choice != 1) {
+                salespersonMainMenu();
+            }
+
+            else if (choice == 1){
                 bookCar();
             }
-            else
-            {
-                salespersonMainMenu();
+
+            else {
+                cout << "Invalid option";
+                goto invalidInput;
             }
 
         }
         if (car->carStatus == "Available") {
             cout << "\n\t===========================================================================================" << endl;
-            cout << "\t|| ID: " << car->carID << endl;
+            cout << "\t|| Car ID: " << car->carID << endl;
             cout << "\t||" << endl;
             cout << "\t|| Title: " << car->carTitle << endl;
             cout << "\t||" << endl;
@@ -1148,7 +1802,7 @@ public:
         cout << "\t||                                      ||" << endl;
         cout << "\t||   2. ADD NEW CUSTOMER                ||" << endl;
         cout << "\t||                                      ||" << endl;
-        cout << "\t||   3. RETURN TO SALESPERSON MENU      ||" << endl;
+        cout << "\t||   3. GO BACK                         ||" << endl;
         cout << "\t||                                      ||" << endl;
         cout << "\t==========================================\n" << endl;
 
@@ -1156,18 +1810,17 @@ public:
         cin >> userInput;
         cin.ignore();
 
-        switch(userInput) {
+        switch (userInput) {
 
-        case 1: 
+        case 1:
             updateCustomerChoice();
             break;
-        
+
         case 2:
             addNewCustomer();
             break;
 
         case 3:
-            system("cls");
             salespersonMainMenu();
 
         default:
@@ -1286,10 +1939,10 @@ public:
             cout << "\t" << endl;
             cout << "\tCUSTOMER PHONE NUMBER  : " << customer->customerPhoneNum << endl;
             cout << "\t" << endl;
-            cout << "\tCUSTOMER DEPOSIT       : RM " << customer->customerDeposit<< endl;
+            cout << "\tCUSTOMER DEPOSIT       : RM " << customer->customerDeposit << endl;
             cout << "\t" << endl;
             cout << "\t============================================================" << endl;
-    
+
 
             cout << endl;
             cout << "\tCustomer Details Successfully Updated!" << endl;
@@ -1303,7 +1956,7 @@ public:
             std::ofstream csvFile("customerDetails.csv", std::ios_base::app);
 
             csvFile << customer->customerID << ","
-                << customer->customerName<< ","
+                << customer->customerName << ","
                 << customer->customerPhoneNum << ","
                 << customer->customerDeposit << std::endl;
 
@@ -1324,7 +1977,7 @@ public:
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class Manager : public Staff{
+class Manager : public Staff {
 
 
 public:
@@ -1359,14 +2012,14 @@ public:
             return;
         }
 
-        managerLogin:
+    managerLogin:
 
         cout << "\t=====================" << endl;
         cout << "\t||  MANAGER LOGIN  ||" << endl;
         cout << "\t=====================" << endl;
 
         // Display the linked list
-        displayUsers(head);
+        /*displayUsers(head);*/
 
 
         // Get input from user and check if it matches a user in the linked list
@@ -1377,7 +2030,7 @@ public:
         cout << "\n\tENTER PASSWORD:";
         getline(cin, staffPassword);
         if (checkUser(head, staffName, staffPassword)) {
-            cout << endl << "\n\tLOGIN SUCCESSFUL!" << endl;
+            cout << endl << "\n\tLOGIN SUCCESSFUL!\n" << endl;
         }
         else {
             cout << "\n\tLOGIN FAILED!" << endl;
@@ -1400,8 +2053,8 @@ public:
 
     void managerMainMenu()
     {
-        int option = 0;
-        while ((option < 1) || (option > 5)) {
+        char option;
+        while ((option = '1') || (option = '2') || (option = '3') || (option = '4') || (option = '5')) {
 
             cout << "\n\t==========================================" << endl;
             cout << "\t||                                      ||" << endl;
@@ -1423,19 +2076,19 @@ public:
             cin.ignore();
 
             switch (option) {
-            case 1:
+            case '1':
                 // Search vehicle information
                 break;
-            case 2:
+            case '2':
                 // Create sale invoice 
                 break;
-            case 3:
+            case '3':
                 //Create Bill invoice
                 break;
-            case 4:
+            case '4':
                 // Report
                 break;
-            case 6:
+            case '5':
                 cout << endl;
                 cout << "\t==================================" << endl;
                 cout << "\t||THANK YOU FOR USING OUR SYSTEM||" << endl;
@@ -1443,7 +2096,10 @@ public:
                 exit(0);
 
             default:
-                cout << "\tInvalid Input!";
+                cout << "\tInvalid Input! Please try again" << endl;;
+                system("pause");
+                system("cls");
+                managerMainMenu();
             }
         }
     }
@@ -1459,10 +2115,10 @@ public:
 
 
 
-int main(){
+int main() {
 
-   // int listCount = 0;
-   // CarList carlist;
+    // int listCount = 0;
+    // CarList carlist;
     Salesperson salesperson;
     Manager manager;
 
@@ -1470,12 +2126,12 @@ int main(){
     salesperson.storeinCustomerLinkedList("customer.csv");
     salesperson.storeInCarLinkedList("carlist.csv");
 
-    menu:
-   // string titleInput;
-   // int CarID;
-    int loginOption = 0;
+menu:
+    // string titleInput;
+    // int CarID;
+    char loginOption;
 
-    while ((loginOption < 1) || (loginOption > 3))
+    while ((loginOption = '1') || (loginOption = '2') || (loginOption = '3'))
     {
 
         cout << "\n\t==========================================" << endl;
@@ -1500,25 +2156,26 @@ int main(){
         cout << endl;
         cin.ignore();
 
-        switch (loginOption)
+        if (loginOption == '1')
         {
-        case 1:
             salesperson.salespersonLogin();
             salesperson.salespersonMainMenu();
-            break;
-        case 2:
+        }
+        else if (loginOption == '2')
+        {
             manager.managerLogin();
             manager.managerMainMenu();
-            break;
-
-        case 3:
+        }
+        else if (loginOption == '3')
+        {
             cout << endl;
             cout << "\t==================================" << endl;
             cout << "\t||THANK YOU FOR USING OUR SYSTEM||" << endl;
             cout << "\t==================================" << endl;
             exit(0);
-
-        default:
+        }
+        else
+        {
             cout << "Invalid Choice." << endl;
             system("pause");
             system("cls");
@@ -1560,7 +2217,7 @@ int main(){
 //    //         cout << endl;
 //    //         cout << "Enter your car ID: ";
 //    //         cin >> CarID;
-//    //         carlist.SearchAndUpdateBasedCarID(CarID);
+//    //         carlist.searchAndUpDateBasedCarID(CarID);
 //    //     }
 //    //     cout << "Do you want to proceed with ing? 1 - Yes, 0 - No: ";
 //    //     cin >> answer;
@@ -1574,11 +2231,11 @@ int main(){
 //     Salesperson salesperson;
 //     salesperson.storeinCustomerLinkedList("customer.csv");
 //     salesperson.manageCustomer();
-    
 
 
 
-//     //carlist.SearchAndUpdateBasedCarID(CarID);
+
+//     //carlist.searchAndUpDateBasedCarID(CarID);
 //     //carlist.displayCarListItemsBinary();
 
 //     /*cout << "Enter Sale Title Search: ";
@@ -1586,4 +2243,5 @@ int main(){
 //     carlist.searchItemBasedOnKeyword(titleInput);
 //     cin.ignore();*/
 // }
+
 
